@@ -9,12 +9,13 @@ public class GameObject {
 	
 	protected Image img;
 	protected GraphicsContext gc;
-	protected ImageView imgView; 
+	protected ImageView imgView;
 
-	public GameObject(GraphicsContext gc) {
-		this.gc = gc;
+	public GameObject(GraphicsContext gc, double x, double y)
+	{
+
 	}
-	
+
 	// for drawing image
 	public void update() {
 		if (img != null) {

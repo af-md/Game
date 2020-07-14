@@ -3,7 +3,6 @@ package View;
 import java.util.ArrayList;
 
 import controllers.MenuController;
-import model2.NumberFactory;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;

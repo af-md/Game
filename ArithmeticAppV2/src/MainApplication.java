@@ -1,5 +1,5 @@
 
-import model2.NumberFactory;
+
 import View.MenuView;
 import controllers.MenuController;
 import javafx.application.Application; 
@@ -20,7 +20,7 @@ public class MainApplication extends Application {
 @Override
 public void start(Stage stage) throws Exception {
 
-	stage.setTitle("Arithmethic App");
+	stage.setTitle("Game");
   	MenuController menuController = new MenuController(stage);
 }
 

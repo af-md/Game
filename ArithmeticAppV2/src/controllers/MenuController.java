@@ -1,8 +1,6 @@
 package controllers;
 
 import View.MenuView;
-import View.OperationView;
-import model2.NumberFactory;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -16,10 +14,8 @@ public class MenuController implements EventHandler{
 		
 		private Stage stage;
 		
-		private MenuView menuView; 
-		
-		OperationView operationView; 
-		
+		private MenuView menuView;
+
 		public MenuController(Stage stage)
 		{
 		  	Pane root = new Pane();
@@ -38,14 +34,12 @@ public class MenuController implements EventHandler{
 			
 				if (event.getSource().equals(menuView.getPlayButton()))
 						{
-							OperationController operationController = new OperationController(stage);
+							StarshipController starshipController = new StarshipController(stage);
 						}
 				else if (event.getSource().equals(menuView.getExitButton()))
 				{
 					// shut the application
-					
 				}
-			
 		}	
 		
 		public Stage getStage()
