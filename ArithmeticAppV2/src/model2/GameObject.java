@@ -9,11 +9,10 @@ public class GameObject {
 	
 	protected Image img;
 	protected GraphicsContext gc;
-	protected ImageView imgView;
 
 	public GameObject(GraphicsContext gc, double x, double y)
 	{
-
+		this.gc = gc;
 	}
 
 	// for drawing image
@@ -23,8 +22,8 @@ public class GameObject {
 		}
 	}
 
-	public ImageView getImage() {
-		return imgView;
+	public Image getImage() {
+		return img;
 	}
 
 }

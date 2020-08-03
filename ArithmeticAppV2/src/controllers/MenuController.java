@@ -1,11 +1,13 @@
 package controllers;
 
 import View.MenuView;
+import View.PlayView;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import model2.WordFactory;
 
 public class MenuController implements EventHandler{
 
@@ -34,7 +36,8 @@ public class MenuController implements EventHandler{
 			
 				if (event.getSource().equals(menuView.getPlayButton()))
 						{
-							StarshipController starshipController = new StarshipController(stage);
+							// think this flow again
+							PlayController playController = new PlayController(stage);
 						}
 				else if (event.getSource().equals(menuView.getExitButton()))
 				{
