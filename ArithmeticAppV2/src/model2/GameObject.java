@@ -9,16 +9,20 @@ public class GameObject {
 	
 	protected Image img;
 	protected GraphicsContext gc;
+	protected double x;
+	protected double y;
 
 	public GameObject(GraphicsContext gc, double x, double y)
 	{
 		this.gc = gc;
+		this.x = x;
+		this.y = y;
 	}
 
 	// for drawing image
 	public void update() {
 		if (img != null) {
-			gc.drawImage(img, 32, 32);
+			gc.drawImage(img, this.x, this.y);
 		}
 	}
 
