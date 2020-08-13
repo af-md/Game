@@ -2,10 +2,12 @@ package View;
 import controllers.PlayController;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -13,12 +15,17 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model2.CircleNumber;;
+import model2.ClipNumber;
 import model2.Ship;
 
 import java.util.Random;
@@ -52,7 +59,7 @@ public class PlayView {
     private ImageView[] greyMeteors;
     Random randomPositionGenerator;
 
-    // points and lifes. make static capital
+    // points and lives. make static capital
     private static final String shipLifeImagePath = "resource/playerLife1_blue.png";
     private ImageView star;
     private CustomLabel customLabel;
@@ -65,15 +72,20 @@ public class PlayView {
     private static final int STAR_RADIUS  = 12;
     private static final int SHIP_RADIUS  = 27;
     private static final int METEOR_RADIUS  = 20;
+    private Text textTest;
+    private Circle circleTest;
 
     // TODO
     // logic for points greater then 20
-    //
+    // much better collision calculation
+    // try add fonts to make it better
+    // it doesn't close after life ended
     public PlayView(PlayController playController, Stage stage)
     {
         root = new Pane();
         Scene scene = new Scene(root, GAME_WIDTH, GAME_HEIGHT);
         stage.setScene(scene);
+        stage.setTitle("Afzal's game");
         stage.show();
 
         randomPositionGenerator = new Random();
@@ -113,11 +125,14 @@ public class PlayView {
             }
         });
 
+        this.stage = stage;
+
         root.getChildren().add(canvas);
         createBackground();
         createShip();
         createGameElements();
         createGameAnimationLoop();
+
     }
 
     private void createShip() {
@@ -125,6 +140,15 @@ public class PlayView {
         ship.setLayoutX(GAME_WIDTH/2);
         ship.setLayoutY(GAME_HEIGHT - 90);
         root.getChildren().add(ship);
+
+        CircleNumber circleNumber = new CircleNumber();
+
+        circleTest = circleNumber.getCircleNumber();
+        textTest = circleNumber.getText();
+        root.getChildren().add(circleTest);
+        root.getChildren().add(textTest);
+
+
     }
 
     private void createGameAnimationLoop()
@@ -262,6 +286,10 @@ public class PlayView {
             greyMeteors[i].setLayoutY(greyMeteors[i].getLayoutY()+7);
             greyMeteors[i].setRotate(greyMeteors[i].getRotate()+4);
         }
+
+        circleTest.setLayoutY(circleTest.getLayoutY()+7);
+        textTest.setLayoutY(textTest.getLayoutY()+17);
+
     };
 
     private void relocateElementToTheTop(){
