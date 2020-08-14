@@ -1,13 +1,11 @@
 package controllers;
 
 import View.MenuView;
-import View.PlayView;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model2.WordFactory;
 
 public class MenuController implements EventHandler{
 

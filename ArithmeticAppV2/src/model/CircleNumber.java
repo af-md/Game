@@ -1,14 +1,9 @@
-package model2;
+package model;
 
-import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextBoundsType;
 
 public class CircleNumber extends Circle {
 
