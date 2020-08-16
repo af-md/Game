@@ -1,6 +1,5 @@
 package Utilities;
 
-import com.sun.prism.paint.RadialGradient;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
@@ -10,19 +9,19 @@ import java.util.Random;
 
 public class GeneralUtils {
 
-    public Random randomPositionGenerator;
+    public Random randomGenerator;
 
     public GeneralUtils(){
-        randomPositionGenerator = new Random();
+        randomGenerator = new Random();
     }
     public  void setRandomElementPosition(ImageView imageView){
-        imageView.setLayoutX(randomPositionGenerator.nextInt(370));
-        imageView.setLayoutY(-(randomPositionGenerator.nextInt(3200))+600);
+        imageView.setLayoutX(randomGenerator.nextInt(370));
+        imageView.setLayoutY(-(randomGenerator.nextInt(3200))+600);
     };
 
     public void setRandomElementPosition2(Group group){
-        group.setLayoutX(randomPositionGenerator.nextInt(370));
-        group.setLayoutY(-(randomPositionGenerator.nextInt(3200))+600);
+        group.setLayoutX(randomGenerator.nextInt(400));
+        group.setLayoutY(-(randomGenerator.nextInt(3000)));
     };
 
     public double calculateDistance(double x1, double x2, double y1, double y2){
@@ -66,5 +65,9 @@ public class GeneralUtils {
         if (gridPane2.getLayoutY() >= 1024){
             gridPane2.setLayoutY(-1024);
         };
+    };
+
+    public int getRandomNumber(){
+        return randomGenerator.nextInt(99);
     };
 }

@@ -1,16 +1,7 @@
 package View;
 
-import java.util.ArrayList;
-
 import controllers.MenuController;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -44,8 +35,10 @@ public MenuView(MenuController menuController, Pane root){
 	exitButton.setTextFill(Color.BLACK);
 	exitButton.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 16));
 	exitButton.setOnAction(menuController);
-	
-	root.getChildren().addAll(playButton, exitButton);
+
+	//createButton();
+
+	root.getChildren().addAll( playButton, exitButton);
 	
 }
 
@@ -53,6 +46,16 @@ public void updateView()
 {
 	// update the view with the users clicked number
 }
+
+public void createButton(){
+	// get button
+	MenuButton menuButton = new MenuButton("Play", 208, 50.0);
+
+	menuButton.setPrefWidth(190);
+	menuButton.setPrefHeight(45);
+	// add to root
+	root.getChildren().add(menuButton);
+};
 
 public Button getPlayButton()
 {

@@ -19,7 +19,7 @@ public class MenuController implements EventHandler{
 		public MenuController(Stage stage)
 		{
 		  	Pane root = new Pane();
-			Scene scene = new Scene(root, 800, 800);
+			Scene scene = new Scene(root, 600, 800);
 		  	stage.setScene(scene);
 		  	stage.show();
 			this.stage = stage; 
@@ -35,7 +35,7 @@ public class MenuController implements EventHandler{
 				if (event.getSource().equals(menuView.getPlayButton()))
 						{
 							// think this flow again
-							PlayController playController = new PlayController(stage);
+							OperationController operationController = new OperationController(stage);
 						}
 				else if (event.getSource().equals(menuView.getExitButton()))
 				{
@@ -52,7 +52,5 @@ public class MenuController implements EventHandler{
 		{
 			return menuView; 
 		}
-		
-	
 
 }

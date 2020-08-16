@@ -2,18 +2,18 @@ package model;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
-public class GameObject {
+public class GameObject extends ImageView {
 
-	protected GraphicsContext gc;
-	protected double x;
-	protected double y;
-
-	public GameObject(GraphicsContext gc, double x, double y)
+	public GameObject(String imagePath, double layoutX, double layoutY)
 	{
-		this.gc = gc;
-		this.x = x;
-		this.y = y;
+		super(imagePath);
+		setLayoutX(layoutX);
+		setLayoutY(layoutY);
 	}
-
+	public GameObject(String imagePath)
+	{
+		super(imagePath);
+	}
 }

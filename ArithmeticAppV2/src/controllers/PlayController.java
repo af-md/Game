@@ -3,12 +3,10 @@ package controllers;
 import Utilities.GeneralUtils;
 import View.CustomLabel;
 import View.PlayView;
-import javafx.animation.AnimationTimer;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
@@ -17,10 +15,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.IFactory;
 import model.NumbersFactory;
+import strategy.IStrategy;
 
 public class PlayController implements EventHandler {
 		
@@ -44,13 +42,16 @@ public class PlayController implements EventHandler {
 	private ImageView ship;
 
 	private ImageView[] greyMeteors;
+	private Group[] brownMeteor;
 
 	// points and lives. make static capital
 	private ImageView star;
-	private CustomLabel customLabel;
+	private CustomLabel customPointLabel;
+	private CustomLabel customRandomNumberLabel;
 	private ImageView[] playerLives;
 	private int playerLife;
 	private int points;
+	private int randomNumber;
 
 	//collision
 	private static final int STAR_RADIUS  = 12;
@@ -62,6 +63,7 @@ public class PlayController implements EventHandler {
 	//factory for objects
 	private IFactory factory;
 
+	private IStrategy concreteStrategy;
 
 	public GeneralUtils generalUtils;
 
@@ -70,7 +72,7 @@ public class PlayController implements EventHandler {
 	// much better collision calculation
 	// try add fonts to make it better
 	// it doesn't close after life ended
-	public PlayController(Stage stage)
+	public PlayController(Stage stage, IStrategy concreteStrategy)
 		{
 			root = new Pane();
 			generalUtils = new GeneralUtils();
@@ -82,7 +84,7 @@ public class PlayController implements EventHandler {
 
 			gc.fillRect(0,0,canvas.getWidth(),canvas.getHeight());
 
-
+			this.concreteStrategy = concreteStrategy;
 			this.stage = stage;
 
 			factory = new NumbersFactory();
@@ -176,10 +178,9 @@ public class PlayController implements EventHandler {
 		star = (ImageView) factory.createObject("star");
 		root.getChildren().add(star);
 		createPointsLabel();
+		createRandomNumberLabel();
 		playerLives = (ImageView[]) factory.createObject("livesStatus");
 		addElementsToPane(playerLives);
-		greyMeteors = (ImageView[]) factory.createObject("meteors");
-		addElementsToPane(greyMeteors);
 	}
 
 	private void addElementsToPane(Node[] node) {
@@ -189,10 +190,18 @@ public class PlayController implements EventHandler {
 	}
 
 	private void createPointsLabel() {
-		customLabel = new CustomLabel("POINTS: 00");
-		customLabel.setLayoutX(460);
-		customLabel.setLayoutY(20);
-		root.getChildren().add(customLabel);
+		customPointLabel = new CustomLabel("POINTS: 00");
+		customPointLabel.setLayoutX(460);
+		customPointLabel.setLayoutY(20);
+		root.getChildren().add(customPointLabel);
+	}
+
+	private void createRandomNumberLabel() {
+		randomNumber = generalUtils.getRandomNumber();
+		customRandomNumberLabel = new CustomLabel("Number: " +randomNumber);
+		customRandomNumberLabel.setLayoutX(460);
+		customRandomNumberLabel.setLayoutY(120);
+		root.getChildren().add(customRandomNumberLabel);
 	}
 
 	;
@@ -200,10 +209,17 @@ public class PlayController implements EventHandler {
 	public void moveGameElement(){
 		star.setLayoutY(star.getLayoutY() + 5);
 
-		for (int i = 0; i < greyMeteors.length; i++) {
-			greyMeteors[i].setLayoutY(greyMeteors[i].getLayoutY()+7);
-			greyMeteors[i].setRotate(greyMeteors[i].getRotate()+4);
+//		for (int i = 0; i < greyMeteors.length; i++) {
+//			greyMeteors[i].setLayoutY(greyMeteors[i].getLayoutY()+7);
+//			greyMeteors[i].setRotate(greyMeteors[i].getRotate()+4);
+//		}
+
+		for (int i = 0; i < brownMeteor.length; i++) {
+			brownMeteor[i].setLayoutY(brownMeteor[i].getLayoutY()+7);
 		}
+
+		// TODO Rotation
+		//greyMeteors[i].setRotate(greyMeteors[i].getRotate()+4);
 	};
 
 	public void relocateElementToTheTop(){
@@ -211,11 +227,12 @@ public class PlayController implements EventHandler {
 			generalUtils.setRandomElementPosition(star);
 		}
 
-		for (int i = 0; i < greyMeteors.length; i++) {
-			if (greyMeteors[i].getLayoutY() > 900){
-				generalUtils.setRandomElementPosition(greyMeteors[i]);
+		for (int i = 0; i < brownMeteor.length; i++) {
+			if (brownMeteor[i].getLayoutY() > 900){
+				generalUtils.setRandomElementPosition2(brownMeteor[i]);
 			}
 		}
+
 	};
 
 	public void checkIfElementCollide(){
@@ -226,13 +243,16 @@ public class PlayController implements EventHandler {
 			if (points < 10){
 				textToSet = textToSet + "0";
 			}
-			customLabel.setText(textToSet + points);
+			customPointLabel.setText(textToSet + points);
 		}
 
-		for (int i = 0; i < greyMeteors.length; i++) {
-			if (METEOR_RADIUS + SHIP_RADIUS > generalUtils.calculateDistance(ship.getLayoutX() + 49, greyMeteors[i].getLayoutX() + 20, ship.getLayoutY() + 37, greyMeteors[i].getLayoutY()+ 20)){
+		for (int i = 0; i < brownMeteor.length; i++) {
+			System.out.println("Numbers:");
+			System.out.println(METEOR_RADIUS + SHIP_RADIUS + "-" + generalUtils.calculateDistance(ship.getLayoutX() + 49, brownMeteor[i].getLayoutX() + 20, ship.getLayoutY() + 37, brownMeteor[i].getLayoutY()+ 20));
+			if (METEOR_RADIUS + SHIP_RADIUS > generalUtils.calculateDistance(ship.getLayoutX() + 49, brownMeteor[i].getLayoutX() + 20, ship.getLayoutY() + 37, brownMeteor[i].getLayoutY()+ 20)){
+				System.out.println("Hit:" + concreteStrategy.executeOperation(1,3));
 				removeLife();
-				generalUtils.setRandomElementPosition(greyMeteors[i]);
+				generalUtils.setRandomElementPosition2(brownMeteor[i]);
 			}
 		}
 	};
@@ -248,8 +268,8 @@ public class PlayController implements EventHandler {
 	};
 
 	private void createOperands(){
-		group = (Group) factory.createObject("operands");
-		root.getChildren().add(group);
+		brownMeteor = (Group[]) factory.createObject("operands");
+		addElementsToPane(brownMeteor);
 	}
 
 	private void createShip() {
