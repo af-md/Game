@@ -7,27 +7,47 @@ import javafx.scene.layout.GridPane;
 
 import java.util.Random;
 
+/**
+ * Common functions are aggregated within this class to make them available to other classes
+ */
 public class GeneralUtils {
 
+    public static final int RAISE_POWER = 2;
+    public static final int BOUND_HORISONTAL_LAYOUT = 400;
+    public static final int BOUND_VERTICAL_LAYOUT = 3000;
+    public static final int VERTICAL_DEPTH = -1024;
+    public static final int VERTICAL_HEIGHT = 1024;
     public Random randomGenerator;
 
     public GeneralUtils(){
         randomGenerator = new Random();
     }
-    public  void setRandomElementPosition(ImageView imageView){
-        imageView.setLayoutX(randomGenerator.nextInt(370));
-        imageView.setLayoutY(-(randomGenerator.nextInt(3200))+600);
+
+    /**
+     * sets the random position of a group element on a pane
+     * @param group
+     */
+    public void setRandomGroupElementPosition(Group group){
+        group.setLayoutX(randomGenerator.nextInt(BOUND_HORISONTAL_LAYOUT));
+        group.setLayoutY(-(randomGenerator.nextInt(BOUND_VERTICAL_LAYOUT)));
     };
 
-    public void setRandomElementPosition2(Group group){
-        group.setLayoutX(randomGenerator.nextInt(400));
-        group.setLayoutY(-(randomGenerator.nextInt(3000)));
-    };
-
+    /**
+     * calculates the distance between 2 circles
+     * @param x1
+     * @param x2
+     * @param y1
+     * @param y2
+     * @return int
+     */
     public double calculateDistance(double x1, double x2, double y1, double y2){
-        return Math.sqrt(Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2));
+        return Math.sqrt(Math.pow(x1-x2, RAISE_POWER) + Math.pow(y1-y2, RAISE_POWER));
     }
 
+    /**
+     * creates a grid pane layout
+     * @return
+     */
     public Node[] createGridPanesForLayout(){
 
         // create grids
@@ -43,7 +63,7 @@ public class GeneralUtils {
             gridPane2.getChildren().add(backgroundImage2);
         }
 
-        gridPane2.setLayoutY(-1024);
+        gridPane2.setLayoutY(VERTICAL_DEPTH);
 
         // add grids to array
         Node[] gripPanes = new Node[2];
@@ -52,18 +72,22 @@ public class GeneralUtils {
         return  gripPanes;
     };
 
-
+    /**
+     * moves one of the grids 0.5 vertically and creates a background moving effect
+     * @param gridPane
+     * @param gridPane2
+     */
     public void moveBackground(GridPane gridPane, GridPane gridPane2){
         gridPane.setLayoutY(gridPane.getLayoutY() + 0.5);
         gridPane2.setLayoutY(gridPane2.getLayoutY() + 0.5);
 
-        if (gridPane.getLayoutY() >= 1024){
-            gridPane.setLayoutY(-1024);
+        if (gridPane.getLayoutY() >= VERTICAL_HEIGHT){
+            gridPane.setLayoutY(VERTICAL_DEPTH);
         };
 
 
-        if (gridPane2.getLayoutY() >= 1024){
-            gridPane2.setLayoutY(-1024);
+        if (gridPane2.getLayoutY() >= VERTICAL_HEIGHT){
+            gridPane2.setLayoutY(VERTICAL_DEPTH);
         };
     };
 }

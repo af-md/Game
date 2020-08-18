@@ -32,6 +32,9 @@ public abstract class  Operations implements IStrategy {
         return 0;
     }
 
+    /**
+     * assigns a random number to randomNumber field except 0 with in the bound of 9
+     */
     @Override
     public void createRandomNumber() {
         do {
@@ -40,6 +43,10 @@ public abstract class  Operations implements IStrategy {
         while (randomNumber == 0);
     }
 
+    /**
+     * adds the number caught by the ship to the arraylist
+     * @param number
+     */
     @Override
     public void addToNumberList(int number) {
         numberList.add(number);
@@ -50,6 +57,10 @@ public abstract class  Operations implements IStrategy {
         return numberList;
     }
 
+    /**
+     * checks whether the randomNumber equals to the number returned by execute operation
+     * @return boolean
+     */
     @Override
     public boolean checkAnswer()
     {
@@ -59,6 +70,10 @@ public abstract class  Operations implements IStrategy {
         return result;
     }
 
+    /**
+     * checks if there are enough operands carry out an operation
+     * @return boolean
+     */
     @Override
     public boolean canCalculateAnswer(){
         if (numberList.size() == 2) return true;

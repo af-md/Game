@@ -2,6 +2,9 @@ package strategy;
 
 import java.util.ArrayList;
 
+/**
+ * the interface will enable to us to pass any strategy to the consumer
+ */
 public interface IStrategy {
     int getRandomNumber();
     String getOperator();

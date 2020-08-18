@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import model.CustomLabel;
 import model.GroupedNodes;
 
 
@@ -134,7 +135,7 @@ public class PlayView {
     public void relocateElementToTheTop(){
         for (int i = 0; i < brownMeteors.length; i++) {
             if (brownMeteors[i].getLayoutY() > 900){
-                generalUtils.setRandomElementPosition2(brownMeteors[i]);
+                generalUtils.setRandomGroupElementPosition(brownMeteors[i]);
             }
         }
 

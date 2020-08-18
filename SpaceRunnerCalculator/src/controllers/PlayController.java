@@ -43,6 +43,7 @@ public class PlayController implements EventHandler {
 	// it doesn't close after life ended
 	// improve algorithms that generates random numbers to generate different numbers at least of the first 5
 	// let them configure their own time
+	// different levels to change the colours of the asteroids falling down
 	public PlayController(Stage stage, IStrategy concreteStrategy)
 		{
 			// instantiate general utils
@@ -132,7 +133,7 @@ public class PlayController implements EventHandler {
 			if (METEOR_RADIUS + SHIP_RADIUS > generalUtils.calculateDistance(playView.ship.getLayoutX() + 49, playView.brownMeteors[i].getLayoutX() + 20, playView.ship.getLayoutY() + 37, playView.brownMeteors[i].getLayoutY()+ 20)){
 				concreteStrategy.addToNumberList(playView.brownMeteors[i].getNumber());
 				checkAnswer();
-				generalUtils.setRandomElementPosition2(playView.brownMeteors[i]);
+				generalUtils.setRandomGroupElementPosition(playView.brownMeteors[i]);
 			}
 		}
 	};
