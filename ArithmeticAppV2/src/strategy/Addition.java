@@ -1,8 +1,12 @@
 package strategy;
 
-public class Addition implements IStrategy {
+public class Addition extends Operations  {
+    public Addition(){
+        super("+", 19);
+    }
+
     @Override
-    public int executeOperation(int operand1, int operand2) {
+    public double executeOperation(double operand1, double operand2) {
         return operand1 + operand2;
     }
 }

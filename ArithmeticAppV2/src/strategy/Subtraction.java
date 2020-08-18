@@ -1,8 +1,11 @@
 package strategy;
 
-public class Subtraction implements IStrategy {
+public class Subtraction extends Operations implements IStrategy {
+    public Subtraction(){
+        super("-", 9);
+    }
     @Override
-    public int executeOperation(int operand1, int operand2) {
+    public double executeOperation(double operand1, double operand2) {
         return operand1 - operand2;
     }
 }

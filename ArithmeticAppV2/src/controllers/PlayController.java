@@ -1,21 +1,14 @@
 package controllers;
 
 import Utilities.GeneralUtils;
-import View.CustomLabel;
 import View.PlayView;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import model.GroupedNodes;
 import model.IFactory;
 import model.NumbersFactory;
 import strategy.IStrategy;
@@ -23,42 +16,18 @@ import strategy.IStrategy;
 public class PlayController implements EventHandler {
 		
 	private PlayView playView;
-	private Pane root;
 	private Stage stage;
-	private GraphicsContext gc;
-	private Canvas canvas;
+
 
 	public boolean isLeftKeyPressed;
 	public boolean isRightKeyPressed;
-
-	private static final int GAME_WIDTH = 600;
-	private static final int GAME_HEIGHT = 800;
-
-	public GridPane gridPane;
-	public GridPane gridPane2;
-
-
-	private int angle;
-	private ImageView ship;
-
-	private ImageView[] greyMeteors;
-	private Group[] brownMeteor;
-
-	// points and lives. make static capital
-	private ImageView star;
-	private CustomLabel customPointLabel;
-	private CustomLabel customRandomNumberLabel;
-	private ImageView[] playerLives;
-	private int playerLife;
-	private int points;
-	private int randomNumber;
 
 	//collision
 	private static final int STAR_RADIUS  = 12;
 	private static final int SHIP_RADIUS  = 27;
 	private static final int METEOR_RADIUS  = 20;
 
-	private Group group;
+	private int angle;
 
 	//factory for objects
 	private IFactory factory;
@@ -72,30 +41,22 @@ public class PlayController implements EventHandler {
 	// much better collision calculation
 	// try add fonts to make it better
 	// it doesn't close after life ended
+	// improve algorithms that generates random numbers to generate different numbers at least of the first 5
+	// let them configure their own time
 	public PlayController(Stage stage, IStrategy concreteStrategy)
 		{
-			root = new Pane();
+			// instantiate general utils
 			generalUtils = new GeneralUtils();
-			canvas = new Canvas(GAME_WIDTH,GAME_HEIGHT);
-
-			gc = canvas.getGraphicsContext2D();
-
-			gc.setFill(Color.WHITE);
-
-			gc.fillRect(0,0,canvas.getWidth(),canvas.getHeight());
-
 			this.concreteStrategy = concreteStrategy;
 			this.stage = stage;
 
 			factory = new NumbersFactory();
 
+			ImageView shipModel = (ImageView) factory.createObject("ship");
+			GroupedNodes[] brownMeteorModels = (GroupedNodes[]) factory.createObject("operands");
+			ImageView[] playerLivesModels = (ImageView[]) factory.createObject("livesStatus");
 
-			createBackground();
-			createShip();
-			createGameElements();
-			createOperands();
-
-			playView = new PlayView(this, stage, root, GAME_WIDTH, GAME_HEIGHT);
+			playView = new PlayView(this, stage, shipModel, brownMeteorModels, playerLivesModels, concreteStrategy.getRandomNumber(), concreteStrategy.getOperator());
 		}
 
 	@Override
@@ -132,20 +93,20 @@ public class PlayController implements EventHandler {
 			if (angle > -30){
 				angle -= 5;
 			}
-			ship.setRotate(angle);
-			if (ship.getLayoutX() > -20)
+			playView.ship.setRotate(angle);
+			if (playView.ship.getLayoutX() > -20)
 			{
-				ship.setLayoutX(ship.getLayoutX() -3);
+				playView.ship.setLayoutX(playView.ship.getLayoutX() -3);
 			}
 		}
 		if (!isLeftKeyPressed && isRightKeyPressed){
 			if (angle < 30){
 				angle += 5;
 			}
-			ship.setRotate(angle);
-			if (ship.getLayoutX() < 522)
+			playView.ship.setRotate(angle);
+			if (playView.ship.getLayoutX() < 522)
 			{
-				ship.setLayoutX(ship.getLayoutX() +3);
+				playView.ship.setLayoutX(playView.ship.getLayoutX() +3);
 			}
 		}
 		if (!isLeftKeyPressed && !isRightKeyPressed){
@@ -154,7 +115,7 @@ public class PlayController implements EventHandler {
 			} else if (angle > 0){
 				angle -= 0;
 			}
-			ship.setRotate(angle );
+			playView.ship.setRotate(angle);
 		}
 		if (isLeftKeyPressed && isRightKeyPressed){
 			if (angle < 0) {
@@ -162,118 +123,51 @@ public class PlayController implements EventHandler {
 			} else if (angle > 0){
 				angle -= 0;
 			}
-			ship.setRotate(angle);
+			playView.ship.setRotate(angle);
 		}
-	};
-
-	public void createBackground(){
-		Node[] gridPanes = generalUtils.createGridPanesForLayout();
-		gridPane = (GridPane) gridPanes[0];
-		gridPane2 = (GridPane) gridPanes[1];
-		root.getChildren().addAll(gridPane, gridPane2);
-	};
-
-	public void createGameElements(){
-		playerLife = 2;
-		star = (ImageView) factory.createObject("star");
-		root.getChildren().add(star);
-		createPointsLabel();
-		createRandomNumberLabel();
-		playerLives = (ImageView[]) factory.createObject("livesStatus");
-		addElementsToPane(playerLives);
-	}
-
-	private void addElementsToPane(Node[] node) {
-		for (int i = 0; i < node.length; i++) {
-			root.getChildren().add(node[i]);
-		}
-	}
-
-	private void createPointsLabel() {
-		customPointLabel = new CustomLabel("POINTS: 00");
-		customPointLabel.setLayoutX(460);
-		customPointLabel.setLayoutY(20);
-		root.getChildren().add(customPointLabel);
-	}
-
-	private void createRandomNumberLabel() {
-		randomNumber = generalUtils.getRandomNumber();
-		customRandomNumberLabel = new CustomLabel("Number: " +randomNumber);
-		customRandomNumberLabel.setLayoutX(460);
-		customRandomNumberLabel.setLayoutY(120);
-		root.getChildren().add(customRandomNumberLabel);
-	}
-
-	;
-
-	public void moveGameElement(){
-		star.setLayoutY(star.getLayoutY() + 5);
-
-//		for (int i = 0; i < greyMeteors.length; i++) {
-//			greyMeteors[i].setLayoutY(greyMeteors[i].getLayoutY()+7);
-//			greyMeteors[i].setRotate(greyMeteors[i].getRotate()+4);
-//		}
-
-		for (int i = 0; i < brownMeteor.length; i++) {
-			brownMeteor[i].setLayoutY(brownMeteor[i].getLayoutY()+7);
-		}
-
-		// TODO Rotation
-		//greyMeteors[i].setRotate(greyMeteors[i].getRotate()+4);
-	};
-
-	public void relocateElementToTheTop(){
-		if (star.getLayoutY()>1200){
-			generalUtils.setRandomElementPosition(star);
-		}
-
-		for (int i = 0; i < brownMeteor.length; i++) {
-			if (brownMeteor[i].getLayoutY() > 900){
-				generalUtils.setRandomElementPosition2(brownMeteor[i]);
-			}
-		}
-
 	};
 
 	public void checkIfElementCollide(){
-		if (SHIP_RADIUS + STAR_RADIUS > generalUtils.calculateDistance(ship.getLayoutX() + 49, star.getLayoutX() + 15, ship.getLayoutY() + 37, star.getLayoutY() + 15)){
-			generalUtils.setRandomElementPosition(star);
-			points++;
-			String textToSet = "POINTS : ";
-			if (points < 10){
-				textToSet = textToSet + "0";
-			}
-			customPointLabel.setText(textToSet + points);
-		}
-
-		for (int i = 0; i < brownMeteor.length; i++) {
-			System.out.println("Numbers:");
-			System.out.println(METEOR_RADIUS + SHIP_RADIUS + "-" + generalUtils.calculateDistance(ship.getLayoutX() + 49, brownMeteor[i].getLayoutX() + 20, ship.getLayoutY() + 37, brownMeteor[i].getLayoutY()+ 20));
-			if (METEOR_RADIUS + SHIP_RADIUS > generalUtils.calculateDistance(ship.getLayoutX() + 49, brownMeteor[i].getLayoutX() + 20, ship.getLayoutY() + 37, brownMeteor[i].getLayoutY()+ 20)){
-				System.out.println("Hit:" + concreteStrategy.executeOperation(1,3));
-				removeLife();
-				generalUtils.setRandomElementPosition2(brownMeteor[i]);
+		for (int i = 0; i < playView.brownMeteors.length; i++) {
+			if (METEOR_RADIUS + SHIP_RADIUS > generalUtils.calculateDistance(playView.ship.getLayoutX() + 49, playView.brownMeteors[i].getLayoutX() + 20, playView.ship.getLayoutY() + 37, playView.brownMeteors[i].getLayoutY()+ 20)){
+				concreteStrategy.addToNumberList(playView.brownMeteors[i].getNumber());
+				checkAnswer();
+				generalUtils.setRandomElementPosition2(playView.brownMeteors[i]);
 			}
 		}
 	};
 
-	private void removeLife(){
-		root.getChildren().remove(playerLives[playerLife]);
-		playerLife--;
-		if (playerLife < 0){
-			stage.close();
-			playView.animationTimer.stop();
-
-		};
-	};
-
-	private void createOperands(){
-		brownMeteor = (Group[]) factory.createObject("operands");
-		addElementsToPane(brownMeteor);
+	public void checkAnswer(){
+		if (concreteStrategy.canCalculateAnswer()){
+			setChosenOperandsOnAnswerGuide(String.valueOf(concreteStrategy.getNumberList().get(0)), String.valueOf(concreteStrategy.getNumberList().get(1)));
+			if (concreteStrategy.checkAnswer()){
+				playView.points++;
+				String textToSet = "POINTS : ";
+				if (playView.points < 10){
+					textToSet = textToSet + "0";
+				}
+				playView.setTextCustomLabel(textToSet);
+				resetRandomNumber();
+//				stage.close();
+//				playView.animationTimer.stop();
+			} else {
+				playView.removeLife();
+				resetRandomNumber();
+			}
+		} else {
+			setChosenOperandsOnAnswerGuide(String.valueOf(concreteStrategy.getNumberList().get(0)), "");
+		}
 	}
 
-	private void createShip() {
-		ship = (ImageView) factory.createObject("ship");
-		root.getChildren().add(ship);
+	private void resetRandomNumber() {
+		playView.randomNumber = concreteStrategy.getRandomNumber();
+		playView.setAnswerGuide("", "");
 	}
+
+	private void setChosenOperandsOnAnswerGuide(String firstOperand, String secondOperand) {
+		if (secondOperand != "")
+		playView.setAnswerGuide(firstOperand, secondOperand);
+		else playView.setAnswerGuide(firstOperand, "");
+	}
+	;
 }

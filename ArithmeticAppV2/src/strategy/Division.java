@@ -1,8 +1,11 @@
 package strategy;
 
-public class Division implements IStrategy{
+public class Division extends Operations implements IStrategy{
+    public Division(){
+        super("/", 10);
+    }
     @Override
-    public int executeOperation(int operand1, int operand2) {
+    public double executeOperation(double operand1, double operand2) {
         return operand1/operand2;
     }
 }

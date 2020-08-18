@@ -9,48 +9,28 @@ import javafx.stage.Stage;
 
 public class MenuController implements EventHandler{
 
-	
-		private Pane root; 
-		
 		private Stage stage;
 		
 		private MenuView menuView;
 
 		public MenuController(Stage stage)
 		{
-		  	Pane root = new Pane();
-			Scene scene = new Scene(root, 600, 800);
-		  	stage.setScene(scene);
-		  	stage.show();
-			this.stage = stage; 
-			this.root = root; 
-			menuView = new MenuView(this, root);
+			this.stage = stage;
+			menuView = new MenuView(this, stage);
 		}
-		
-		
 
 		@Override
 		public void handle(Event event) {
 			
 				if (event.getSource().equals(menuView.getPlayButton()))
 						{
-							// think this flow again
 							OperationController operationController = new OperationController(stage);
 						}
 				else if (event.getSource().equals(menuView.getExitButton()))
 				{
-					// shut the application
+					stage.close();
+					menuView.animationTimer.stop();
 				}
-		}	
-		
-		public Stage getStage()
-		{
-			return stage;
-		}
-		
-		public MenuView getMenuView()
-		{
-			return menuView; 
 		}
 
 }

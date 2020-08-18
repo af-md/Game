@@ -15,9 +15,9 @@ public class GroupedNodes extends Group {
         ImageView imageView =  new ImageView(imageMeteorPath);
         getChildren().add(imageView);
         generalUtils.setRandomElementPosition2(this);
-        Text hi = new Text(imageView.getLayoutX() + 17, imageView.getLayoutY() + 25, Integer.toString(number));
-        hi.setFill(Color.RED);
-        hi.setFont(new Font(20));
+        Text hi = new Text(imageView.getLayoutX() + 30, imageView.getLayoutY() + 40, Integer.toString(number));
+        hi.setFill(Color.BEIGE);
+        hi.setFont(new Font(30));
         getChildren().add(hi);
     }
 

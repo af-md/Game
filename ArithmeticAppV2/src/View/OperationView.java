@@ -1,16 +1,30 @@
 package View;
 
+import Utilities.GeneralUtils;
 import controllers.OperationController;
+import javafx.animation.AnimationTimer;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 
 public class OperationView {
+    private final Stage stage;
     private Pane root;
     private OperationController operationController;
+
+    // moving background
+    public GridPane gridPane;
+    public GridPane gridPane2;
+
+    private GeneralUtils generalUtils;
+    private AnimationTimer animationTimer;
 
     public Button getMultiplication() {
         return multiplication;
@@ -36,13 +50,19 @@ public class OperationView {
 
     private Button division;
 
-    public OperationView(OperationController operationController, Pane root) {
+    public OperationView(OperationController operationController, Stage stage) {
         super();
-        this.root = root;
+        root = new Pane();
+        Scene scene = new Scene(root, 600, 800);
+        stage.setScene(scene);
+        stage.show();
+        this.stage = stage;
         this.operationController = operationController;
 
+        generalUtils = new GeneralUtils();
+
         multiplication = new Button("Multiplication");
-        multiplication.setLayoutX(208);
+        multiplication.setLayoutX(120);
         multiplication.setLayoutY(50.0);
         multiplication.setPrefWidth(350.0);
         multiplication.setPrefHeight(80.0);
@@ -51,7 +71,7 @@ public class OperationView {
         multiplication.setOnAction(operationController);
 
         addition = new Button("Addiction");
-        addition.setLayoutX(208);
+        addition.setLayoutX(120);
         addition.setLayoutY(172.0);
         addition.setPrefWidth(350.0);
         addition.setPrefHeight(80.0);
@@ -61,8 +81,8 @@ public class OperationView {
 
 
         subtraction = new Button("Subtraction");
-        subtraction.setLayoutX(208);
-        subtraction.setLayoutY(220.0);
+        subtraction.setLayoutX(120);
+        subtraction.setLayoutY(290);
         subtraction.setPrefWidth(350.0);
         subtraction.setPrefHeight(80.0);
         subtraction.setTextFill(Color.BLACK);
@@ -72,15 +92,34 @@ public class OperationView {
 
 
         division = new Button("Division");
-        division.setLayoutX(208);
-        division.setLayoutY(280.0);
+        division.setLayoutX(120);
+        division.setLayoutY(420);
         division.setPrefWidth(350.0);
         division.setPrefHeight(80.0);
         division.setTextFill(Color.BLACK);
         division.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 16));
         division.setOnAction(operationController);
-
+        createBackground();
+        createGameAnimationLoop();
         root.getChildren().addAll(addition, multiplication, subtraction, division);
 
     }
+
+    private void createGameAnimationLoop()
+    {
+        animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                generalUtils.moveBackground(gridPane, gridPane2);
+            }
+        };
+        animationTimer.start();
+    };
+
+    public void createBackground(){
+        Node[] gridPanes = generalUtils.createGridPanesForLayout();
+        gridPane = (GridPane) gridPanes[0];
+        gridPane2 = (GridPane) gridPanes[1];
+        root.getChildren().addAll(gridPane, gridPane2);
+    };
 }

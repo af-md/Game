@@ -20,7 +20,7 @@ public class MainApplication extends Application {
 @Override
 public void start(Stage stage) throws Exception {
 
-	stage.setTitle("Game");
+    stage.setTitle("Afzal's Space Runner Calculator Game");
   	MenuController menuController = new MenuController(stage);
 }
 

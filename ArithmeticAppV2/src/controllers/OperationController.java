@@ -7,10 +7,9 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import strategy.Multiplication;
+import strategy.*;
 
 public class OperationController implements EventHandler {
-    private Pane root;
 
     private Stage stage;
 
@@ -20,21 +19,25 @@ public class OperationController implements EventHandler {
 
     public OperationController(Stage stage)
     {
-        Pane root = new Pane();
-        Scene scene = new Scene(root, 600, 800);
-        stage.setScene(scene);
-        stage.show();
         this.stage = stage;
-        this.root = root;
-        operationView = new OperationView(this, root);
+        operationView = new OperationView(this, stage);
     }
 
     @Override
     public void handle(Event event) {
         if (event.getSource().equals(operationView.getMultiplication()))
         {
-            // think this flow again
+            // TODO full MVC
             playController = new PlayController(stage, new Multiplication());
+        }
+        if (event.getSource().equals(operationView.getAddition())){
+            playController = new PlayController(stage, new Addition());
+        }
+        if (event.getSource().equals(operationView.getDivision())){
+            playController = new PlayController(stage, new Division());
+        }
+        if (event.getSource().equals(operationView.getSubtraction())){
+            playController = new PlayController(stage, new Subtraction());
         }
     }
 }

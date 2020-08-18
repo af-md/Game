@@ -14,7 +14,6 @@ public class NumbersFactory  implements IFactory {
 
         return switch (disc) {
             case "ship" -> new Ship("resource/blueShip.png" ,600/2, 800-90);
-            case "star" -> new Star("resource/star_gold.png", generalUtils);
             case "livesStatus" -> createPlayerLifeStatus();
             case "operands" -> createOperand();
             default -> null;
@@ -32,9 +31,9 @@ public class NumbersFactory  implements IFactory {
 
     private Group[] createOperand(){
         // needs work from here.
-        Group[] groupedNodes = new GroupedNodes[9];
+        GroupedNodes[] groupedNodes = new GroupedNodes[9];
         for (int i = 0; i < groupedNodes.length; i++) {
-            groupedNodes[i] = new GroupedNodes("resource/meteorBrown_med3.png", generalUtils, i);
+            groupedNodes[i] = new GroupedNodes("resource/meteorBrown_big3.png", generalUtils, i);
         }
         return groupedNodes;
     }

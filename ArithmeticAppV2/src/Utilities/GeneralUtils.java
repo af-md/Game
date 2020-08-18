@@ -66,8 +66,4 @@ public class GeneralUtils {
             gridPane2.setLayoutY(-1024);
         };
     };
-
-    public int getRandomNumber(){
-        return randomGenerator.nextInt(99);
-    };
 }
