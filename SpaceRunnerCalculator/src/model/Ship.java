@@ -7,4 +7,8 @@ public class Ship extends GameObject {
     public Ship(String shipImagePath, int layoutX, int layoutY) {
         super(shipImagePath, layoutX, layoutY);
     }
+
+    public Ship(String shipImagePath) {
+        super(shipImagePath);
+    }
 }

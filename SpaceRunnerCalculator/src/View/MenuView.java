@@ -58,17 +58,6 @@ public class MenuView {
 	root.getChildren().addAll( playButton, exitButton);
 	
 }
-
-public void createButton(){
-	// get button
-	MenuButton menuButton = new MenuButton("Play", 208, 50.0);
-
-	menuButton.setPrefWidth(190);
-	menuButton.setPrefHeight(45);
-	// add to root
-	root.getChildren().add(menuButton);
-};
-
 	private void createGameAnimationLoop()
 	{
 		animationTimer = new AnimationTimer() {

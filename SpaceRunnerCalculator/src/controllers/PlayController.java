@@ -10,7 +10,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import model.GroupedNodes;
 import model.IFactory;
-import model.NumbersFactory;
+import model.Factory;
 import strategy.IStrategy;
 
 public class PlayController implements EventHandler {
@@ -27,6 +27,7 @@ public class PlayController implements EventHandler {
 	private static final int SHIP_RADIUS  = 27;
 	private static final int METEOR_RADIUS  = 20;
 
+	// to create motion when pressing left right keyboard keys
 	private int angle;
 
 	//factory for objects
@@ -36,14 +37,6 @@ public class PlayController implements EventHandler {
 
 	public GeneralUtils generalUtils;
 
-	// TODO
-	// logic for points greater then 20
-	// much better collision calculation
-	// try add fonts to make it better
-	// it doesn't close after life ended
-	// improve algorithms that generates random numbers to generate different numbers at least of the first 5
-	// let them configure their own time
-	// different levels to change the colours of the asteroids falling down
 	public PlayController(Stage stage, IStrategy concreteStrategy)
 		{
 			// instantiate general utils
@@ -51,8 +44,9 @@ public class PlayController implements EventHandler {
 			this.concreteStrategy = concreteStrategy;
 			this.stage = stage;
 
-			factory = new NumbersFactory();
+			factory = new Factory();
 
+			// get images from a factory
 			ImageView shipModel = (ImageView) factory.createObject("ship");
 			GroupedNodes[] brownMeteorModels = (GroupedNodes[]) factory.createObject("operands");
 			ImageView[] playerLivesModels = (ImageView[]) factory.createObject("livesStatus");
@@ -63,6 +57,7 @@ public class PlayController implements EventHandler {
 	@Override
 	public void handle(Event event) {
 
+		// cast to get eventType
 		KeyEvent keyEvent = (KeyEvent) event;
 
 		if (keyEvent.getEventType() == KeyEvent.KEY_PRESSED){
@@ -87,7 +82,9 @@ public class PlayController implements EventHandler {
 		}
 	}
 
-
+	/**
+	 * Moves ship by checking on each frame whether right key or left key are pressed by the user
+	 */
 	public void moveShip()
 	{
 		if (isLeftKeyPressed && !isRightKeyPressed){
@@ -128,6 +125,9 @@ public class PlayController implements EventHandler {
 		}
 	};
 
+	/**
+	 * By using the radius of the 2 objects on the pane, this method determines whether they're circumference have been in contact with each other.
+	 */
 	public void checkIfElementCollide(){
 		for (int i = 0; i < playView.brownMeteors.length; i++) {
 			if (METEOR_RADIUS + SHIP_RADIUS > generalUtils.calculateDistance(playView.ship.getLayoutX() + 49, playView.brownMeteors[i].getLayoutX() + 20, playView.ship.getLayoutY() + 37, playView.brownMeteors[i].getLayoutY()+ 20)){
@@ -138,10 +138,14 @@ public class PlayController implements EventHandler {
 		}
 	};
 
+	/**
+	 * Uses concrete strategy to check whether the answer is correct
+	 */
 	public void checkAnswer(){
 		if (concreteStrategy.canCalculateAnswer()){
 			setChosenOperandsOnAnswerGuide(String.valueOf(concreteStrategy.getNumberList().get(0)), String.valueOf(concreteStrategy.getNumberList().get(1)));
 			if (concreteStrategy.checkAnswer()){
+				// add points to the view if answer is correct
 				playView.points++;
 				String textToSet = "POINTS : ";
 				if (playView.points < 10){
@@ -149,8 +153,6 @@ public class PlayController implements EventHandler {
 				}
 				playView.setTextCustomLabel(textToSet);
 				resetRandomNumber();
-//				stage.close();
-//				playView.animationTimer.stop();
 			} else {
 				playView.removeLife();
 				resetRandomNumber();
@@ -165,6 +167,11 @@ public class PlayController implements EventHandler {
 		playView.setAnswerGuide("", "");
 	}
 
+	/**
+	 * Takes in the operands of an operation and displays them on the label on the view
+	 * @param firstOperand
+	 * @param secondOperand
+	 */
 	private void setChosenOperandsOnAnswerGuide(String firstOperand, String secondOperand) {
 		if (secondOperand != "")
 		playView.setAnswerGuide(firstOperand, secondOperand);

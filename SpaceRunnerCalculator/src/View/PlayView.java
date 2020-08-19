@@ -9,7 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import model.CustomLabel;
+import components.CustomLabel;
 import model.GroupedNodes;
 
 
@@ -77,8 +77,7 @@ public class PlayView {
 
     }
 
-    // TODO Casting issue use generics instead
-    // TODO Add docs to methods
+
     private void createGameAnimationLoop()
     {
          animationTimer = new AnimationTimer() {
@@ -127,9 +126,6 @@ public class PlayView {
         for (int i = 0; i < brownMeteors.length; i++) {
             brownMeteors[i].setLayoutY(brownMeteors[i].getLayoutY()+7);
         }
-
-        // TODO Rotation; get rid of the star
-        //greyMeteors[i].setRotate(greyMeteors[i].getRotate()+4);
     };
 
     public void relocateElementToTheTop(){

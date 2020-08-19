@@ -1,6 +1,6 @@
 package strategy;
 
-public class Subtraction extends Operations implements IStrategy {
+public class Subtraction extends Operations {
     public Subtraction(){
         super("-", 9);
     }

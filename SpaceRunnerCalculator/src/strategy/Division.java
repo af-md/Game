@@ -1,6 +1,6 @@
 package strategy;
 
-public class Division extends Operations implements IStrategy{
+public class Division extends Operations {
     public Division(){
         super("/", 10);
     }

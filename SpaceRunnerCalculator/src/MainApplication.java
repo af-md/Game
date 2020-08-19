@@ -17,7 +17,11 @@ public class MainApplication extends Application {
       
    }
 
-@Override
+    /**
+     * Set title and instantiate menuController obj.
+     * @param stage
+     */
+    @Override
 public void start(Stage stage) throws Exception {
 
     stage.setTitle("Afzal's Space Runner Calculator Game");

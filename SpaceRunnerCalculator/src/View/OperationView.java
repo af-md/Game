@@ -26,28 +26,9 @@ public class OperationView {
     private GeneralUtils generalUtils;
     private AnimationTimer animationTimer;
 
-    public Button getMultiplication() {
-        return multiplication;
-    }
-
     private Button multiplication;
-
-    public Button getAddition() {
-        return addition;
-    }
-
     private Button addition;
-
-    public Button getSubtraction() {
-        return subtraction;
-    }
-
     private Button subtraction;
-
-    public Button getDivision() {
-        return division;
-    }
-
     private Button division;
 
     public OperationView(OperationController operationController, Stage stage) {
@@ -70,7 +51,7 @@ public class OperationView {
         multiplication.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 16));
         multiplication.setOnAction(operationController);
 
-        addition = new Button("Addiction");
+        addition = new Button("Addition");
         addition.setLayoutX(120);
         addition.setLayoutY(172.0);
         addition.setPrefWidth(350.0);
@@ -122,4 +103,21 @@ public class OperationView {
         gridPane2 = (GridPane) gridPanes[1];
         root.getChildren().addAll(gridPane, gridPane2);
     };
+
+    public Button getMultiplication() {
+        return multiplication;
+    }
+
+    public Button getAddition() {
+        return addition;
+    }
+
+    public Button getSubtraction() {
+        return subtraction;
+    }
+
+    public Button getDivision() {
+        return division;
+    }
+
 }

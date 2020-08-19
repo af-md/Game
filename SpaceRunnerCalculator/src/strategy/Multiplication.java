@@ -1,6 +1,6 @@
 package strategy;
 
-public class Multiplication extends Operations implements IStrategy  {
+public class Multiplication extends Operations  {
 
     public Multiplication(){
         super("x", 10);

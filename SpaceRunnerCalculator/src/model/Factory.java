@@ -4,7 +4,7 @@ import Utilities.GeneralUtils;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 
-public class NumbersFactory  implements IFactory {
+public class Factory implements IFactory {
     public GeneralUtils generalUtils;
     @Override
     public Object createObject(String discriminator) {
